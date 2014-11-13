@@ -31,16 +31,16 @@ task main()
 			motor[right] = joystick.joy1_y2/2;
 			motor[right2] = joystick.joy1_y2/2;
 		}
-		if(joy1Btn(2)){
+		if(joy2Btn(2)){
 			motor[spinner2] = 100;
-			}else if(joy1Btn(1)){
+			}else if(joy2Btn(1)){
 			motor[spinner2] = -100;
 			}else{
 			motor[spinner2] = 0;
 		}
-		if(joy1Btn(3)){
+		if(joy2Btn(3)){
 			motor[spinner] = 100;
-			}else if(joy1Btn(4)){
+			}else if(joy2Btn(4)){
 			motor[spinner] = -100;
 			}else{
 			motor[spinner] = 0;
