@@ -1,0 +1,5 @@
+*.aux
+*.backup
+*~
+*.log
+**/Thumbs.db
