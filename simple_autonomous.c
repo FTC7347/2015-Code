@@ -54,7 +54,7 @@ void initializeRobot()
 {
   // Place code here to sinitialize servos to starting positions.
   // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
-	servo[grabber] = 85;
+	servo[grabber] = 0;
 	servo[opener] = 188;
   return;
 }
@@ -86,30 +86,12 @@ void drive(int speed){
   motor[left2] = speed;
   motor[right2] = speed;
 }
-void rotate(int speed, int time){
-	motor[left] = speed;
-  motor[right] = -speed;
-  motor[left2] = speed;
-  motor[right2] = -speed;
-  wait10Msec(time);
-  motor[left] = 0;
-  motor[right] = 0;
-  motor[left2] = 0;
-  motor[right2] = 0;
-}
 task main()
 {
   initializeRobot();
   waitForStart(); // Wait for the beginning of autonomous phase.
 	drive(-50);
   wait10Msec(200);
-	drive(0);
-	wait10Msec(50);
-	servo[grabber] = 0;
-	rotate(50,50);
-	wait10Msec(50);
-	drive(70);
-	wait10Msec(300);
 	drive(0);
 
 }
