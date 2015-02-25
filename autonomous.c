@@ -54,8 +54,6 @@ void initializeRobot()
 {
   // Place code here to sinitialize servos to starting positions.
   // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
-	servo[grabber] = 85;
-	servo[opener] = 188;
   return;
 }
 

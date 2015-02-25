@@ -3,13 +3,13 @@
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S2,     ,               sensorI2CMuxController)
 #pragma config(Motor,  mtr_S1_C1_1,     left,          tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C1_2,     intake,        tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C1_2,     llauncher,     tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_1,     left2,         tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S1_C2_2,     lifter,        tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C3_1,     rlauncher,     tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C3_2,     right,         tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C4_1,     right2,        tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C4_2,     llauncher,     tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C4_2,     intake,        tmotorTetrix, openLoop)
 #pragma config(Servo,  srvo_S2_C1_1,    grabber,              tServoStandard)
 #pragma config(Servo,  srvo_S2_C1_2,    opener,               tServoStandard)
 #pragma config(Servo,  srvo_S2_C1_3,    servo3,               tServoNone)
@@ -23,13 +23,59 @@
 #include "JoystickDriver.c"
 
 const int driveType = 1;
+int LaunchEncoderValue = 0;
+//int PrevLaunchEncoderValue = 0;
+//int PrevEncoderReadTime = 0;
+int EncoderReadTime = 0;
+int EncoderChange = 0;
+float LauncherAngularVelocity = 0;
+int LoopTime = 0;
+void LauncherReverse(){
+	motor[llauncher] = 127;
+	motor[rlauncher] = 127;
+}
+void LauncherForward(){
+	motor[llauncher] = -127;
+	motor[rlauncher] = -127;
+}
+void LauncherStop(){
+	motor[llauncher] = 0;
+	motor[rlauncher] = 0;
+}
+void UpdateEncoders(){
+	EncoderReadTime = time1[T1];
+	LaunchEncoderValue = nMotorEncoder[llauncher];
+	//PrevLaunchEncoderValue = LauncherEncoderValue;
+	//PrevEncoderReadTime = EncoderReadTime;
+	//LauncherEncoderValue = nMotorEncoder[llauncher];
+	//EncoderReadTime = time1[T1];
+	//EncoderChange = LauncherEncoderValue-PrevLaunchEncoderValue;
+	//LoopTime = EncoderReadTime-PrevEncoderReadTime;
+	LauncherAngularVelocity = ((float)LaunchEncoderValue/(float)EncoderReadTime);
 
+	//nxtDisplayCenteredTextLine(7, "Change: %d",EncoderChange);
+	//nxtDisplayCenteredTextLine(3, "lenc: %d", LaunchEncoderValue);
+	nxtDisplayCenteredTextLine(2, "AngVel: %f", LauncherAngularVelocity);
+	//nxtDisplayCenteredTextLine(7, "Time: %d", EncoderReadTime);
+	//nxtDisplayCenteredTextLine(6, "Loop: %d", LoopTime);
+	//nxtDisplayCenteredTextLine(5, "PrevEnc: %d",PrevLaunchEncoderValue);
+	nMotorEncoder[llauncher] = 0;
+	ClearTimer(T1);
+}
 task main()
 {
+	nMotorEncoder[llauncher] = 0;
+	nMotorEncoder[rlauncher] = 0;
+
 	while(true)
 	{
+
 		//each stick controls a motor
 		getJoystickSettings(joystick);
+		if(time1[T1]>200){
+			UpdateEncoders();
+		}
+
 
 		if (driveType == 0) {
 
@@ -63,33 +109,53 @@ task main()
 			motor[right] = rightPwr;
 			motor[right2] = rightPwr;
 		}
+
 		if(joy1Btn(6)){
-			motor[intake] = -100;
-			motor[llauncher] = -127;
-			motor[rlauncher] = -127;
+			//right top button (RB)
+			//	motor[intake] = -127;
+			LauncherForward();
 			}else if(joy1Btn(8)){
-			motor[intake] = 100;
-			motor[llauncher] = 127;
-			motor[rlauncher] = 127;
+			//right bottom button (RT)
+			//motor[intake] = 127;
+			LauncherReverse();
 			}else{
-			motor[intake] = 0;
-			motor[llauncher] = 0;
-			motor[rlauncher] = 0;
+			if(joy2Btn(6)){
+				//right top button (RB)
+				//	motor[intake] = -127;
+				if((time1[T2] > 1000)&&(LauncherAngularVelocity>-0.0001)){
+					LauncherStop();
+				}
+				LauncherForward();
+				}else if(joy2Btn(8)){
+				//right bottom button (RT)
+				//motor[intake] = 127;
+				LauncherReverse();
+				}else{
+				//motor[intake] = 0;
+				LauncherStop();
+				ClearTimer(T2);
+			}
+
+			//motor[intake] = 0;
+
 		}
+
+
+
 		if(joy1Btn(2)){
-			servo[grabber] = 0;
-		}else if(joy1Btn(1)){
-			servo[grabber] = 85;
+			servo[grabber] = 100;
+			}else if(joy1Btn(1)){
+			servo[grabber] = 160;
 		}
 		if(joy1Btn(3)){
 			servo[opener] = 0;
-		}else if(joy1Btn(4)){
-			servo[opener] = 188;
+			}else if(joy1Btn(4)){
+			servo[opener] = 255;
 		}
 		//added jan 7
 		if(joy1Btn(5)){
 			motor[lifter] = 100;
-		}else if(joy1Btn(7)){
+			}else if(joy1Btn(7)){
 			motor[lifter] = -100;
 		}
 		else{
