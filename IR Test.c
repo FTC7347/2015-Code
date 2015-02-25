@@ -3,15 +3,7 @@
 // IRSeek.c - a simple program to demonstrate how to use the
 // HiTechnic IR Seeker V2 sensor. This program requires
 // the HTIRS2-driver.h driver provided with RobotC.
-//
-// You can copy the "drivers" subdirectory and place it
-// in the same directory as this source file. if you do,
-// you can use the following #include statement to specify
-// the path to the driver.
-#include "drivers/HTIRS2-driver.h"
-// if you use the "drivers/HTIRS2-driver.h" line,
-// then you should comment out the following line.
-//#include "HTIRS2-driver.h"
+#include "drivers/hitechnic-irseeker-v2.h"
 // sTextLines is an array of strings - used to keep
 // track of if changes to display occur.
 string sTextLines[8];
