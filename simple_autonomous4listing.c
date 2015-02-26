@@ -21,13 +21,13 @@
 #include "JoystickDriver.c"
 
 void initializeRobot() {
-	servo[grabber] = 0;
-	servo[opener] = 188;
+  servo[grabber] = 0;
+  servo[opener] = 188;
   return;
 }
 
 void drive(int speed) {
-	motor[left] = speed;
+  motor[left] = speed;
   motor[right] = speed;
   motor[left2] = speed;
   motor[right2] = speed;
@@ -36,7 +36,7 @@ void drive(int speed) {
 task main() {
   initializeRobot();
   waitForStart(); // Wait for the beginning of autonomous phase.
-	drive(-50);
+  drive(-50);
   wait10Msec(200);
-	drive(0);
+  drive(0);
 }
