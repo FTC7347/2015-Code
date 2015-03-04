@@ -56,7 +56,7 @@ void UpdateEncoders(){
 	//nxtDisplayCenteredTextLine(7, "Change: %d",EncoderChange);
 	//nxtDisplayCenteredTextLine(3, "lenc: %d", LaunchEncoderValue);
 	nxtDisplayCenteredTextLine(2, "AngVel: %f", LauncherAngularVelocity);
-	nxtDisplayCenteredTextLine(7, "Time: %d", time100[T2]);
+	//nxtDisplayCenteredTextLine(7, "Time: %d", EncoderReadTime);
 	//nxtDisplayCenteredTextLine(6, "Loop: %d", LoopTime);
 	//nxtDisplayCenteredTextLine(5, "PrevEnc: %d",PrevLaunchEncoderValue);
 	nMotorEncoder[llauncher] = 0;
@@ -112,33 +112,28 @@ task main()
 
 		if(joy1Btn(6)){
 			//right top button (RB)
-			motor[intake] = -127;
+			//	motor[intake] = -127;
 			LauncherForward();
 			}else if(joy1Btn(8)){
 			//right bottom button (RT)
-			motor[intake] = 127;
+			//motor[intake] = 127;
 			LauncherReverse();
 			}else{
 			if(joy2Btn(6)){
 				//right top button (RB)
-				motor[intake] = -127;
-				if((time100[T2] > 10)&&( abs(LauncherAngularVelocity)<2)){
+				//	motor[intake] = -127;
+				if((time1[T2] > 1000)&&(LauncherAngularVelocity>-0.0001)){
 					LauncherStop();
-					wait10Msec(300);
 				}
 				LauncherForward();
-			}else if(joy2Btn(8)){
+				}else if(joy2Btn(8)){
 				//right bottom button (RT)
-				motor[intake] = 127;
-			 	if((time100[T2] > 10)&&(abs(LauncherAngularVelocity)<2)){
-					LauncherStop();
-					wait10Msec(300);
-				}
+				//motor[intake] = 127;
 				LauncherReverse();
-			}else{
-				motor[intake] = 0;
+				}else{
+				//motor[intake] = 0;
 				LauncherStop();
-				time100[T2] = 0;
+				ClearTimer(T2);
 			}
 
 			//motor[intake] = 0;
@@ -148,9 +143,9 @@ task main()
 
 
 		if(joy1Btn(2)){
-			servo[grabber] = 65;
+			servo[grabber] = 100;
 			}else if(joy1Btn(1)){
-			servo[grabber] = 130;
+			servo[grabber] = 160;
 		}
 		if(joy1Btn(3)){
 			servo[opener] = 0;
