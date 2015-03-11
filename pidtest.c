@@ -16,18 +16,20 @@
 #pragma config(Servo,  srvo_S2_C1_4,    servo4,               tServoNone)
 #pragma config(Servo,  srvo_S2_C1_5,    servo5,               tServoNone)
 #pragma config(Servo,  srvo_S2_C1_6,    servo6,               tServoNone)
+
 #include "PID.h"
-void drive(int speed){
+
+void drive(int speed) {
 	motor[left] = speed;
 	motor[right] = speed;
 	motor[left2] = speed;
 	motor[right2] = speed;
 }
 
-struct PIDController pid = {0.01, 0,0,0,0, false, 0,0,0,0,0,0};
+PIDController pid = {
+	0.01,0,0,0,0,0,0,0,0,0, false, 0};
 
-task main()
-{
+task main() {
 	pid.setPoint = 90;
 	while (true) {
 		motor[left] = PIDUpdate(nMotorEncoder[left], &pid);

@@ -1,19 +1,18 @@
-#if defined(PID_H)
+#if !defined(PID_H)
 #define PID_H
 
-struct PIDController {
-	float kP, kI, kD, iAccumulator, setPoint;
+typedef struct PIDController {
+	float kP, kI, kD, iAccumulator, setPoint, maxOutput,
+	maxInput, minOutput, minInput, prevError;
 	bool cont;
 	int lastTime;
-	float maxOutput, maxInput, minOutput, minInput;
-	float prevError;
-}
+} PIDController;
 
-float PIDUpdate(float input, struct PIDController *ctr) {
-	float output = 0;
+float PIDUpdate(float input, PIDController *ctr) {
+	float result = 0;
 	float error = ctr->setPoint - input;
 	if(ctr->cont) {
-		if (fabs(error)>(ctr->maxInput - ctr->minInput)/2) {
+		if (abs(error)>(ctr->maxInput - ctr->minInput)/2) {
 			if (error > 0) {
 				error = error - ctr->maxInput + ctr->minInput;
 			} else {
