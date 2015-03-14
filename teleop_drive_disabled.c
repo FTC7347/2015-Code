@@ -22,7 +22,7 @@
 
 #include "JoystickDriver.c"
 
-const int driveType = 1;
+//const int driveType = 1;
 int LaunchEncoderValue = 0;
 //int PrevLaunchEncoderValue = 0;
 //int PrevEncoderReadTime = 0;
