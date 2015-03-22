@@ -3,10 +3,10 @@
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S2,     ,               sensorI2CMuxController)
 #pragma config(Motor,  mtr_S1_C1_1,     left,          tmotorTetrix, PIDControl, encoder)
-#pragma config(Motor,  mtr_S1_C1_2,     llauncher,     tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C1_2,     launcher,      tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_1,     left2,         tmotorTetrix, PIDControl, reversed, encoder)
-#pragma config(Motor,  mtr_S1_C2_2,     lifter,        tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C3_1,     launcher,      tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C2_2,     rlifter,       tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C3_1,     llifter,       tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S1_C3_2,     right,         tmotorTetrix, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C4_1,     right2,        tmotorTetrix, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C4_2,     intake,        tmotorTetrix, openLoop)
@@ -24,20 +24,117 @@ void initializeRobot()
 
 	return;
 }
+void llifterMoveOnly(){
+	if(nNxtButtonPressed == 2){
+		motor[llifter] = 30;
+		motor[rlifter] = 0;
+	}
+	else if(nNxtButtonPressed == 1){
+		motor[llifter] = -30;
+		motor[rlifter] = 0;
+		}else{
+		motor[llifter] = 0;
+		motor[rlifter] = 0;
+	}
+}
+
+void rlifterMoveOnly(){
+	if(nNxtButtonPressed == 2){
+		motor[rlifter] = 30;
+		motor[llifter] = 0;
+	}
+	else if(nNxtButtonPressed == 1){
+		motor[rlifter] = -30;
+		motor[llifter] = 0;
+		}else{
+		motor[rlifter] = 0;
+		motor[llifter] = 0;
+	}
+}
+
+void BothLiftersMove(){
+	if(nNxtButtonPressed == 2){
+		motor[llifter] = 100;
+		motor[rlifter] = 50;
+	}
+	else if(nNxtButtonPressed == 1){
+		motor[llifter] = -100;
+		motor[rlifter] = -50;
+		}else{
+		motor[llifter] = 0;
+		motor[rlifter] = 0;
+	}
+}
+
+bool llift = false;
+bool rlift = false;
 task main()
 {
 	initializeRobot();
-
-
-
+	nNxtExitClicks = 4;
 	while(true){
-		if(nNxtButtonPressed == 1){
-			motor[lifter] = 100;
-			}else if (nNxtButtonPressed == 2){
-			motor[lifter] = -100;
-			}else{
-			motor[lifter] = 0;
+		//left button toggle
+		if(llift == false && nNxtButtonPressed == 3){
+			llift = true;
+			wait10Msec(50);
+		}
+		if(llift == true && nNxtButtonPressed == 3){
+			llift = false;
+			wait10Msec(50);
+		}
 
+		//right button toggle
+		if(rlift == false && nNxtButtonPressed == 0){
+			rlift = true;
+			wait10Msec(50);
+		}
+		if(rlift == true && nNxtButtonPressed == 0){
+			rlift = false;
+			wait10Msec(50);
+		}
+
+
+		if(llift == true){
+			if(rlift == false){
+				nxtFillRect(0,64,10,0);
+				nxtEraseRect(90,64,100,0);
+				}else if(rlift == true){
+				nxtFillRect(0,64,10,0);
+				nxtFillRect(90,64,100,0);
+			}
+			}else if(rlift == true){
+			nxtEraseRect(0,64,10,0);
+			nxtFillRect(90,64,100,0);
+			}else{
+			nxtEraseRect(0,64,10,0);
+			nxtEraseRect(90,64,100,0);
+		}
+
+
+		if(llift == true){
+			if(rlift == false){
+					llifterMoveOnly();
+				}else if(rlift == true){
+					BothLiftersMove();
+				}
+		}else if(rlift == true){
+			rlifterMoveOnly();
+		}else{
+			motor[llifter] = 0;
+			motor[rlifter] = 0;
 		}
 	}
+
 }
+
+//old code
+//while(true){
+//	if(nNxtButtonPressed == 1){
+//		motor[lifter] = 100;
+//		}else if (nNxtButtonPressed == 2){
+//		motor[lifter] = -100;
+//		}else{
+//		motor[lifter] = 0;
+
+//	}
+//}

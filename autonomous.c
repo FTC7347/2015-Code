@@ -3,10 +3,10 @@
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S2,     ,               sensorI2CMuxController)
 #pragma config(Motor,  mtr_S1_C1_1,     left,          tmotorTetrix, openLoop, reversed)
-#pragma config(Motor,  mtr_S1_C1_2,     llauncher,     tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C1_2,     launcher,      tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_1,     left2,         tmotorTetrix, openLoop, reversed)
-#pragma config(Motor,  mtr_S1_C2_2,     lifter,        tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C3_1,     rlauncher,     tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C2_2,     llifter,       tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C3_1,     rlifter,       tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C3_2,     right,         tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C4_1,     right2,        tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C4_2,     intake,        tmotorTetrix, openLoop)
@@ -107,9 +107,11 @@ task main()
   wait10Msec(250);
 	drive(0);
 	wait10Msec(100);
-	motor[lifter] = 100;
+	motor[llifter] = 100;
+	motor[rlifter] = 100;
 	wait10Msec(500);
-	motor[lifter] = 0;
+	motor[llifter] = 0;
+	motor[rlifter] = 0;
 	wait10Msec(50);
 	drive(-10);
 	wait10Msec(280);

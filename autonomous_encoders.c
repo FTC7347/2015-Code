@@ -6,10 +6,10 @@
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop, encoder)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop, encoder)
 #pragma config(Motor,  mtr_S1_C1_1,     left,          tmotorTetrix, openLoop, reversed)
-#pragma config(Motor,  mtr_S1_C1_2,     llauncher,     tmotorTetrix, openLoop, encoder)
+#pragma config(Motor,  mtr_S1_C1_2,     launcher,      tmotorTetrix, openLoop, encoder)
 #pragma config(Motor,  mtr_S1_C2_1,     left2,         tmotorTetrix, openLoop, reversed, encoder)
-#pragma config(Motor,  mtr_S1_C2_2,     lifter,        tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C3_1,     rlauncher,     tmotorTetrix, openLoop, encoder)
+#pragma config(Motor,  mtr_S1_C2_2,     llifter,       tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C3_1,     rlifter,       tmotorTetrix, openLoop, encoder)
 #pragma config(Motor,  mtr_S1_C3_2,     right,         tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C4_1,     right2,        tmotorTetrix, openLoop, encoder)
 #pragma config(Motor,  mtr_S1_C4_2,     intake,        tmotorTetrix, openLoop)
@@ -116,16 +116,13 @@ task main()
   //motor[left2] = 0;
   //motor[right2] = 0;
 
-  nMotorEncoder[llauncher] = 0;
+  nMotorEncoder[launcher] = 0;
   nMotorEncoder[rlauncher] = 0;
- 	motor[llauncher] = 127;
- 	motor[rlauncher] = 127;
+ 	motor[launcher] = 127;
   while (true) {
-		nxtDisplayCenteredTextLine(2, "renc: %d, %d", nMotorEncoder[llauncher]);
-			nxtDisplayCenteredTextLine(3, "lenc: %d, %d", nMotorEncoder[rlauncher]);
-			nxtDisplayCenteredTextLine(4, "R/L: %d", ((float)nMotorEncoder[rlauncher])/((float)nMotorEncoder[llauncher]));
+		nxtDisplayCenteredTextLine(2, "renc: %d, %d", nMotorEncoder[launcher]);
+			nxtDisplayCenteredTextLine(4, "R/L: %d", ((float)nMotorEncoder[rlauncher])/((float)nMotorEncoder[launcher]));
   }
-  motor[llauncher] = 0;
-  motor[rlauncher] = 0;
+  motor[launcher] = 0;
 
 }
