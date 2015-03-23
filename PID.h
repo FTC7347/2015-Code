@@ -32,6 +32,8 @@ float PIDUpdate(float input, PIDController *ctr) {
 			ctr->iAccumulator = ctr->maxOutput / ctr->kI;
 		}
 	}
+	//nxtDisplayCenteredTextLine(3, "error: %d", error);
+	//nxtDisplayCenteredTextLine(4, "P:%d, kP: %d", ctr->kP * error, ctr->kP);
 	result = ctr->kP * error + ctr->kI * ctr->iAccumulator + ctr->kD * (error - ctr->prevError);
 	ctr->prevError = error;
 	if (result > ctr->maxOutput) result = ctr->maxOutput;
