@@ -55,11 +55,11 @@ void rlifterMoveOnly(){
 void BothLiftersMove(){
 	if(nNxtButtonPressed == 2){
 		motor[llifter] = 100;
-		motor[rlifter] = 50;
+		motor[rlifter] = 80;
 	}
 	else if(nNxtButtonPressed == 1){
 		motor[llifter] = -100;
-		motor[rlifter] = -50;
+		motor[rlifter] = -80;
 		}else{
 		motor[llifter] = 0;
 		motor[rlifter] = 0;

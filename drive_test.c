@@ -22,7 +22,7 @@
 
 #include "JoystickDriver.c"
 
-const int driveType = 1;
+const int driveType = 0;
 int LaunchEncoderValue = 0;
 //int PrevLaunchEncoderValue = 0;
 //int PrevEncoderReadTime = 0;
@@ -38,6 +38,9 @@ void LauncherForward(){
 }
 void LauncherStop(){
 	motor[launcher] = 0;
+}
+void OneSpin(){
+	//
 }
 void UpdateEncoders(){
 	EncoderReadTime = time1[T1];
@@ -80,14 +83,14 @@ task main()
 				motor[left2] = 0;
 				}else{
 				motor[left] = -joystick.joy1_y1;
-				motor[left2] = joystick.joy1_y1;
+				motor[left2] = -joystick.joy1_y1;
 			}
 			if(joystick.joy1_y2<20 && joystick.joy1_y2>-20){
 				motor[right] = 0;
 				motor[right2] = 0;
 				}else{
 				motor[right] = joystick.joy1_y2;
-				motor[right2] = joystick.joy1_y2;
+				motor[right2] = -joystick.joy1_y2;
 			}
 			} else if (driveType == 1) {
 			int leftIn = joystick.joy1_y1;
@@ -108,30 +111,30 @@ task main()
 
 		if(joy1Btn(6)){
 			//right top button (RB)
-			//motor[intake] = -127;
+			motor[intake] = -127;
 			LauncherForward();
 			}else if(joy1Btn(8)){
 			//right bottom button (RT)
-			//motor[intake] = 127;
+			motor[intake] = 127;
 			LauncherReverse();
 			}else{
-			if(joy2Btn(6)){
+			if(joy1Btn(6)){
 				//right top button (RB)
-				//motor[intake] = -127;
+				motor[intake] = -127;
 				if((time100[T2] > 10)&&( abs(LauncherAngularVelocity)<2)){
 					LauncherStop();
 					wait10Msec(300);
 				}
 				LauncherForward();
-			}else if(joy2Btn(8)){
+				}else if(joy1Btn(8)){
 				//right bottom button (RT)
 				motor[intake] = 127;
-			 	if((time100[T2] > 10)&&(abs(LauncherAngularVelocity)<2)){
+				if((time100[T2] > 10)&&(abs(LauncherAngularVelocity)<2)){
 					LauncherStop();
 					wait10Msec(300);
 				}
 				LauncherReverse();
-			}else{
+				}else{
 				motor[intake] = 0;
 				LauncherStop();
 				ClearTimer(T2);
@@ -145,16 +148,27 @@ task main()
 
 		if(joy1Btn(2)){
 			servo[LBgrab] = 226;   //down
-		  servo[RBgrab] = 0;
+			servo[RBgrab] = 0;
 			}else if(joy1Btn(1)){
-		  servo[LBgrab] = 0;
+			servo[LBgrab] = 0;
 			servo[RBgrab] = 241;   //up
 		}
-		if(joy2Btn(3)){
-			servo[opener] = 0;
-			}else if(joy1Btn(4)){  //values to be determined
-			servo[opener] = 255;
+		if(joy2Btn(4)){
+			servo[opener] = 1;
+			}else if(joy2Btn(2)){  //values to be determined
+			servo[opener] = 243;
 		}
+		if(joy2Btn(6)){
+			servo[FRgrab] = 0;
+			}else if(joy2Btn(8)){
+			servo[FRgrab] = 236;
+		}
+		if(joy2Btn(5)){
+			servo[FLgrab] = 255;
+			}else if(joy2Btn(7)){
+			servo[FLgrab] = 18;
+		}
+
 		//added jan 7
 		if(joy1Btn(5)){
 			motor[llifter] = 100;
