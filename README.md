@@ -1,3 +1,3 @@
 Code
 ====
-A repository for all team code.
+A repository for all 2015 team code.
